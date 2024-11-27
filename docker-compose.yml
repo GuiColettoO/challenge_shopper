@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: my_postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: shopper
+      POSTGRES_DB: shopper
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # app:
+  #   build:
+  #     context: ./server
+  #     dockerfile: Dockerfile
+  #   container_name: my_node_app
+  #   depends_on:
+  #     - postgres
+  #   environment:
+  #     DB_HOST: postgres # Usando o nome do serviço
+  #     DB_PORT: 5432
+  #     DB_USER: postgres
+  #     DB_PASSWORD: shopper
+  #     DB_NAME: shopper
+  #   ports:
+  #     - "8080:8080"
+  #   command:
+  #     [
+  #       "sh",
+  #       "-c",
+  #       "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all && npm start",
+  #     ]
+
+volumes:
+  postgres_data:
