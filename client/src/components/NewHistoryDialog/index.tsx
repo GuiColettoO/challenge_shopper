@@ -8,7 +8,7 @@ export function NewHistoryModal() {
       <Overlay />
 
       <Content>
-        <Dialog.Title>Ride</Dialog.Title>
+        <Dialog.Title>History</Dialog.Title>
 
         <CloseButton>
           <X size={24} />

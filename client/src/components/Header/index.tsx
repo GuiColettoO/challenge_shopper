@@ -15,9 +15,7 @@ export function Header() {
         <div className="button-group">
           <Dialog.Root>
             <Dialog.Trigger asChild>
-              {/* <Link to="/"> */}
               <NewEstimateButton>Start Ride</NewEstimateButton>
-              {/* </Link> */}
             </Dialog.Trigger>
 
             <NewEstimateModal />

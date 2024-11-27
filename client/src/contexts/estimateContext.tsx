@@ -23,6 +23,8 @@ export type Location = {
     latitude: number;
     longitude: number;
   };
+  distance: number;
+  duration: string;
 };
 
 export type Options = {
@@ -50,6 +52,8 @@ export function EstimateProvider({ children }: { children: ReactNode }) {
   const [location, setLocation] = useState<Location>({
     origin: { latitude: -23.5871708, longitude: -46.6144713 },
     destination: { latitude: -23.5593911, longitude: -46.6209632 },
+    distance: 0,
+    duration: "",
   });
   const [options, setOptions] = useState<Options[]>([]);
 
@@ -60,7 +64,7 @@ export function EstimateProvider({ children }: { children: ReactNode }) {
         data: { response },
       } = estimate;
 
-      console.log("MANEIRO:", response);
+      console.log("MANEIROOOOOO:", response);
 
       setOptions(response.options);
       setLocation({
@@ -72,6 +76,8 @@ export function EstimateProvider({ children }: { children: ReactNode }) {
           latitude: response.destination.latitude,
           longitude: response.destination.longitude,
         },
+        distance: response.distance,
+        duration: response.duration,
       });
     } catch (error) {
       console.error("Error creating estimate:", error);

@@ -4,8 +4,10 @@ import { CloseButton, Content, Overlay } from "./style";
 import { useEstimate } from "../../contexts/estimateContext";
 import { useState } from "react";
 import { useConfirm } from "../../contexts/confirmContext";
+import { useNavigate } from "react-router-dom";
 
 export function NewEstimateModal() {
+  const navigate = useNavigate();
   const { createEstimate } = useEstimate();
   const { handleUpdateConfirm } = useConfirm();
   const [customerID, setCustomerID] = useState("");
@@ -31,6 +33,7 @@ export function NewEstimateModal() {
       setCustomerID("");
       setOrigin("");
       setDestination("");
+      navigate(`/estimate`);
     } catch (error) {
       console.error("Failed to create estimate:", error);
     }
