@@ -10,7 +10,7 @@ import {
 
 export function Home() {
   const { options, location } = useEstimate();
-  const { createConfirm } = useConfirm();
+  const { createConfirm, handleUpdateConfirm } = useConfirm();
 
   const handleSelect = async () => {
     try {
@@ -47,7 +47,7 @@ export function Home() {
                   <td>{option.review.rating}</td>
                   <td>{option.value}</td>
                   <td>
-                    <button>Select</button>
+                    <button onClick={handleSelect}>Select</button>
                   </td>
                 </tr>
               )))
