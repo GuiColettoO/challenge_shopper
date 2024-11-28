@@ -11,5 +11,6 @@ export type RideOutputDto = {
       id: string;
       name: string;
     } | null;
+    created_at: Date;
   }[];
 };

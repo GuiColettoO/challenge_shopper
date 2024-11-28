@@ -1,6 +1,4 @@
 import { Sequelize } from 'sequelize-typescript';
-import { config } from 'dotenv';
-config();
 import { DriverSequelizeRepository } from '../../../../infrastructure/driver/db/sequelize/repository/driver.repository';
 import { CustomerModel } from '../../../../infrastructure/customer/db/sequelize/model/customer.model';
 import { DriverModel } from '../../../../infrastructure/driver/db/sequelize/model/driver.model';
@@ -12,7 +10,8 @@ import { RideModel } from '../../../../infrastructure/ride/db/sequelize/model/ri
 import { RideSequelizeRepository } from '../../../../infrastructure/ride/db/sequelize/repository/ride.repository';
 import { CreateConfirmUseCase } from '../../../confirm/use-case/confirm.use-case';
 import { FindRidesByCustomerAndDriverUseCase } from '../findByCustomerAndDriver.use-case';
-
+import { config } from 'dotenv';
+config();
 describe('CreateDriverUseCase Integration Tests', () => {
   let createDriveUseCase: CreateDriverUseCase;
   let driveRepository: DriverSequelizeRepository;
@@ -130,6 +129,7 @@ describe('CreateDriverUseCase Integration Tests', () => {
             name: driver1.name,
           },
           value: estimate.options[0].value,
+          created_at: rides.rides[0].created_at,
         },
       ],
     });

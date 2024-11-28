@@ -29,6 +29,7 @@ export class FindRidesByCustomerAndDriverUseCase
           }
         : null,
       value: ride.value,
+      created_at: ride.created_at,
     }));
 
     return { rides: rideDetails };

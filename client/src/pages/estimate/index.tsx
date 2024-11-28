@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"; // Importe o useNavigate
+import { useNavigate } from "react-router-dom";
 import { MapView } from "../../components/Map";
 import { useConfirm } from "../../contexts/confirmContext";
 import { Options, useEstimate } from "../../contexts/estimateContext";
@@ -6,18 +6,21 @@ import {
   HomeContainer,
   ListDriverContainer,
   MapContainer,
+  NewEstimateButton,
   TransactionsTable,
 } from "./style";
+import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 
 export function Estimate() {
   const navigate = useNavigate();
   const { options, location } = useEstimate();
-  const { createConfirm, handleUpdateConfirm, confirm } = useConfirm();
+  const { createConfirm, confirm } = useConfirm();
 
   const handleSelect = async (option: Options) => {
     console.log("Option selected:", option);
     try {
-      handleUpdateConfirm({
+      await createConfirm({
         customer_id: confirm.customer_id,
         origin: confirm.origin,
         destination: confirm.destination,
@@ -30,13 +33,27 @@ export function Estimate() {
         value: option.value,
       });
 
-      await createConfirm();
-
       console.log("Estimate created successfully!");
 
-      navigate(`/history`);
+      navigate(
+        `/history?customer_id=${confirm.customer_id}&driver_id=${option.id}`
+      );
     } catch (error) {
-      console.error("Failed to create estimate:", error);
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          toast.error(error.response.data.message);
+          console.error(
+            "Failed to create estimate:",
+            error.response.data.message
+          );
+        } else {
+          toast.error("An unexpected error occurred.");
+          console.error("Failed to create estimate:", error.message);
+        }
+      } else {
+        toast.error("An unexpected error occurred.");
+        console.error("Error:", error);
+      }
     }
   };
 
@@ -62,9 +79,16 @@ export function Estimate() {
                   <td>{option.description}</td>
                   <td>{option.vehicle}</td>
                   <td>{option.review.rating}</td>
-                  <td>{option.value}</td>
                   <td>
-                    <button onClick={() => handleSelect(option)}>Select</button>
+                    {new Intl.NumberFormat("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    }).format(option.value)}
+                  </td>
+                  <td>
+                    <NewEstimateButton onClick={() => handleSelect(option)}>
+                      Select
+                    </NewEstimateButton>
                   </td>
                 </tr>
               ))

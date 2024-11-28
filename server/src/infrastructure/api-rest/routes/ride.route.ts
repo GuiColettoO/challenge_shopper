@@ -10,10 +10,11 @@ import {
   value,
 } from '../../../application/estimate/use-case/estimate.use-case';
 import { GoogleMapsApi } from '../../../@shared/infrastructure/repository/google-maps-api-repository/google-maps-api.repository';
-import { config } from 'dotenv';
 import { CreateConfirmUseCase } from '../../../application/confirm/use-case/confirm.use-case';
 import { FindRidesByCustomerAndDriverUseCase } from '../../../application/ride/use-case/findByCustomerAndDriver.use-case';
-config();
+require('dotenv').config({ override: false });
+
+console.log(process.env.GOOGLE_MAPS_API_KEY);
 
 export const rideRouter = express.Router();
 
@@ -89,7 +90,7 @@ rideRouter.patch(
       if (errorMessage === 'Motorista não encontrado') {
         return res.status(404).json({
           message: 'Motorista não encontrado',
-          data: {
+          response: {
             error_code: 'DRIVER_NOT_FOUND',
             error_description: errorMessage,
           },
@@ -99,7 +100,7 @@ rideRouter.patch(
       if (errorMessage === 'Quilometragem inválida para o motorista') {
         return res.status(406).json({
           message: 'Quilometragem inválida para o motorista',
-          data: {
+          response: {
             error_code: 'INVALID_DISTANCE',
             error_description: errorMessage,
           },
@@ -108,7 +109,7 @@ rideRouter.patch(
 
       return res.status(400).json({
         message: 'Os dados fornecidos no corpo da requisição são inválidos',
-        data: {
+        response: {
           error_code: 'INVALID_DATA',
           error_description: errorMessage,
         },
@@ -132,7 +133,7 @@ rideRouter.get(
       if (!result.rides || result.rides.length === 0) {
         return res.status(404).json({
           message: 'Nenhum registro encontrado',
-          data: {
+          response: {
             error_code: 'NO_RIDES_FOUND',
             error_description:
               'Não foram encontradas corridas para os parâmetros fornecidos.',
@@ -142,13 +143,13 @@ rideRouter.get(
 
       res.status(200).json({
         message: 'Operação realizada com sucesso',
-        data: result,
+        response: result,
       });
     } catch (error) {
       const err = error as Error;
       res.status(400).json({
         message: 'Motorista invalido',
-        data: {
+        response: {
           error_code: 'INVALID_DRIVER',
           error_description: err.message,
         },

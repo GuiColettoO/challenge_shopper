@@ -1,6 +1,4 @@
 import { Sequelize } from 'sequelize-typescript';
-import { config } from 'dotenv';
-config();
 import { DriverSequelizeRepository } from '../../../../infrastructure/driver/db/sequelize/repository/driver.repository';
 import { CustomerModel } from '../../../../infrastructure/customer/db/sequelize/model/customer.model';
 import { DriverModel } from '../../../../infrastructure/driver/db/sequelize/model/driver.model';
@@ -10,6 +8,14 @@ import { CreateEstimateUseCase } from '../../../estimate/use-case/estimate.use-c
 import { CreateDriverUseCase } from '../../../driver/create/create-driver.use-case';
 import { RideModel } from '../../../../infrastructure/ride/db/sequelize/model/ride.model';
 import { RideSequelizeRepository } from '../../../../infrastructure/ride/db/sequelize/repository/ride.repository';
+import * as path from 'path';
+import * as dotenv from 'dotenv';
+
+dotenv.config({
+  path: path.resolve(__dirname, '../../../../../.env'),
+});
+
+console.log(process.env.GOOGLE_MAPS_API_KEY);
 
 describe('CreateDriverUseCase Integration Tests', () => {
   let createDriveUseCase: CreateDriverUseCase;

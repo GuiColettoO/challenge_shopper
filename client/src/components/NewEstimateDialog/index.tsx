@@ -5,8 +5,14 @@ import { useEstimate } from "../../contexts/estimateContext";
 import { useState } from "react";
 import { useConfirm } from "../../contexts/confirmContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
 
-export function NewEstimateModal() {
+type NewEstimateModalProps = {
+  close: () => void;
+};
+
+export function NewEstimateModal({ close }: NewEstimateModalProps) {
   const navigate = useNavigate();
   const { createEstimate } = useEstimate();
   const { handleUpdateConfirm } = useConfirm();
@@ -33,9 +39,24 @@ export function NewEstimateModal() {
       setCustomerID("");
       setOrigin("");
       setDestination("");
+      close();
       navigate(`/estimate`);
     } catch (error) {
-      console.error("Failed to create estimate:", error);
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          toast.error(error.response.data.message);
+          console.error(
+            "Failed to create estimate:",
+            error.response.data.message
+          );
+        } else {
+          toast.error("An unexpected error occurred.");
+          console.error("Failed to create estimate:", error.message);
+        }
+      } else {
+        toast.error("An unexpected error occurred.");
+        console.error("Error:", error);
+      }
     }
   };
 

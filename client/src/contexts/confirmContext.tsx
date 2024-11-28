@@ -17,7 +17,7 @@ export type CreateConfirmInput = {
 
 type ConfirmContextData = {
   handleUpdateConfirm: (data: Partial<CreateConfirmInput>) => void;
-  createConfirm: () => Promise<void>;
+  createConfirm: (data: CreateConfirmInput) => Promise<void>;
   confirm: CreateConfirmInput;
 };
 
@@ -39,9 +39,10 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
     console.log("Confirm updated:", data);
   }
 
-  const createConfirm = async () => {
+  const createConfirm = async (data: CreateConfirmInput) => {
     try {
-      await api.patch("/ride/confirm", confirm);
+      console.log("testando o confirm:", data);
+      await api.patch("/ride/confirm", data);
     } catch (error) {
       console.error("Error creating Confirm:", error);
       throw error;
